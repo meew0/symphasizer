@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+		<style>
+			body {
+				text-align: center;
+			}
+			textarea {
+				border: none;
+				margin: auto;
+				outline: none;
+				margin-top: 100px;
+				width: 60%;
+				font-family: 'Source Code Pro', monospace;
+				font-size: 24pt;
+			}
+
+			* {
+				font-family: 'Source Sans Pro', sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Symphasizer</h1>
+		<p>Enter some text and watch it being turned into music!</p>
+		<textarea id="input" placeholder="Xu Daga, aga, ajax pe!"></textarea>
+		<script src="js/freqs.js"></script>
+		<script src="js/values.js"></script>
+		<script src="js/audio.js"></script>
+		<script>
+			var current = 48; // Start with middle C
+			var index = 0;
+			var delay = 350; // 350 ms of delay between notes
+			var delayMod = 1;
+
+			var currentText = "";
+
+			function updateText() {
+				currentText = "" + document.getElementById("input").value;
+				currentText = currentText.replace(/ /g, '');
+			}
+
+			updateText();
+
+			function playOneNote() {
+				index++;
+				delayMod = 1;
+
+				if(!currentText[index]) {
+					index = -1;
+					updateText();
+					current = 48; // Reset note to middle C
+				} else {
+					var c = currentText[index];
+
+					var foundM = true, m;
+
+					while(foundM) {
+						foundM = false; // don't continue the loop until further notice
+						m = currentText[index + 1];
+
+						// Check if there is a length modifier
+						if(m) {
+							if(m in lengths) {
+								index++; // advance one more step to ignore the modifier
+								delayMod *= lengths[m];
+								foundM = true; // continue the loop
+							}
+						}
+					}
+
+					// Don't play characters that aren't notes
+					if(c in deltas) {
+						current += deltas[c];
+
+						console.log("Playing " + c + ' (' + current + ') delayMod = ' + delayMod);
+						if(delayMod != 0) {
+							play(freqs[current], delay * delayMod);
+						}
+					}
+				}
+				window.setTimeout(playOneNote, delay * delayMod);
+			}
+			playOneNote();
+
+		</script>
+	</body>
+</html>
