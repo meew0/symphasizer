@@ -77,7 +77,9 @@
 
 						console.log("Playing " + c + ' (' + current + ') delayMod = ' + delayMod);
 						if(delayMod != 0) {
-							play(freqs[current], delay * delayMod);
+							play(freqs[current], delay * delayMod, 1);
+							play(freqs[current + 7], delay * delayMod, 0.5);
+							play(freqs[current + 12], delay * delayMod, 0.3);
 						}
 					}
 				}

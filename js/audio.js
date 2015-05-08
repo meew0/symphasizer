@@ -9,10 +9,13 @@ var context;
 	}
 }(window));
 
-function play(freq, time) {
+function play(freq, time, volume) {
 	var oscillator = context.createOscillator();
+	var gainNode = context.createGain();
 	oscillator.frequency.value = freq;
-	oscillator.connect(context.destination);
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	gainNode.gain.value = volume;
 	oscillator.start();
 	window.setTimeout(function() { oscillator.stop() }, time);
 }
