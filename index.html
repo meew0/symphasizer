@@ -5,16 +5,26 @@
 		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 		<style>
 			body {
-				text-align: center;
 			}
-			textarea {
+			.container {
+				margin-left: 15%;
+			}
+			#input {
 				border: none;
-				margin: auto;
 				outline: none;
-				margin-top: 100px;
-				width: 60%;
+				margin-top: 50px;
 				font-family: 'Source Code Pro', monospace;
 				font-size: 24pt;
+				background-color: #eee;
+				padding: 5px;
+				display: inline-block;
+				white-space: nowrap;
+			}
+			#input * {
+				font-family: 'Source Code Pro', monospace;
+				font-size: 24pt;
+				background-color: #eee;
+
 			}
 
 			* {
@@ -23,9 +33,11 @@
 		</style>
 	</head>
 	<body>
-		<h1>Symphasizer</h1>
-		<p>Enter some text and watch it being turned into music!</p>
-		<textarea id="input" placeholder="Xu Daga, aga, ajax pe!"></textarea>
+		<div class="container">
+			<h1>Symphasizer</h1>
+			<p>Enter some text and watch it being turned into music!</p>
+			<span id="input" contenteditable="true" placeholder="Xu Daga, aga, ajax pe!">Xu Daga, aga, ajax pe!</span>
+		</div>
 		<script src="js/freqs.js"></script>
 		<script src="js/values.js"></script>
 		<script src="js/audio.js"></script>
@@ -38,8 +50,8 @@
 			var currentText = "";
 
 			function updateText() {
-				currentText = "" + document.getElementById("input").value;
-				currentText = currentText.replace(/ /g, '');
+				currentText = "" + document.getElementById("input").textContent;
+				currentText = currentText.replace(/\s+/g, '');
 			}
 
 			updateText();
@@ -85,7 +97,7 @@
 				}
 				window.setTimeout(playOneNote, delay * delayMod);
 			}
-			playOneNote();
+				window.setTimeout(playOneNote, 1000);
 
 		</script>
 	</body>
